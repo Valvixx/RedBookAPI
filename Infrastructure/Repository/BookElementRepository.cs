@@ -23,16 +23,24 @@ public class BookElementRepository(IDapperContext dapperContext):IBookElementRep
         return await dapperContext.FirstOrDefault<BookElement>(queryObject);
     }
 
-    public async Task<BookElement> AddBookElement(string type, string title, string description, string placement, string image)
+    public async Task<BookElement> AddBookElement(string type, string title, string description, string placement, List<string> images)
     {
         var queryObject =
             new QueryObject(
-                "INSERT INTO book_elements(type, title, description, image)" +
-                " VALUES(@type, @title, @description) RETURNING *",
-                new { type, title, description, image });
-        return await dapperContext.CommandWithResponse<BookElement>(queryObject);
+                "INSERT INTO book_elements(type, title, description)" +
+                " VALUES(@type, @title, @description) RETURNING *", new {type, title, description});
+        var id = (await dapperContext.CommandWithResponse<BookElement>(queryObject)).Id;
+        var queryObject2 =
+            new QueryObject(
+                " INSERT INTO element_pictures(id, link)" +
+                " VALUES (@image)", new { images });
+        await dapperContext.Command<BookElement>(queryObject2);
+        var result = new QueryObject(
+            "", new {}); //Написать queryObject и queryObject2 JOIN
+        
+        return await dapperContext.CommandWithResponse<BookElement>(result);
     }
-
+    
     public Task<BookElement> PatchBookElement(string type, string title, string description, string placement, string image)
     {
         throw new NotImplementedException();
