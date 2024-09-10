@@ -1,21 +1,23 @@
 ﻿using Infrastructure.Dapper;
 using Infrastructure.Dapper.Interfaces;
 using Domain.Entities;
+using Infrastructure.Models;
 using Infrastructure.Repository.Interfaces;
 
 namespace Infrastructure.Repository;
 
 public class BookElementRepository(IDapperContext dapperContext):IBookElementRepository
 {
-    public async Task<BookElement?> GetBookElementByTitle(string title)
+    public async Task<BookElement?> GetByTitleAsync(string title)
     {
         var queryObject =
             new QueryObject(
                 "SELECT * FROM book_elements WHERE title = @title", new {title});
+        
         return await dapperContext.FirstOrDefault<BookElement>(queryObject);
     }
 
-    public async Task<BookElement?> GetAllBookElementsByType(string type)
+    public async Task<BookElement?> GetAllByTypeAsync(string type)
     {
         var queryObject =
             new QueryObject(
@@ -23,30 +25,23 @@ public class BookElementRepository(IDapperContext dapperContext):IBookElementRep
         return await dapperContext.FirstOrDefault<BookElement>(queryObject);
     }
 
-    public async Task<BookElement> AddBookElement(string type, string title, string description, string placement, List<string> images)
+    public Task<BookElement> CreateAsync(BookElementDbCreate data)
     {
-        var queryObject =
-            new QueryObject(
-                "INSERT INTO book_elements(type, title, description)" +
-                " VALUES(@type, @title, @description) RETURNING *", new {type, title, description});
-        var id = (await dapperContext.CommandWithResponse<BookElement>(queryObject)).Id;
-        var queryObject2 =
-            new QueryObject(
-                " INSERT INTO element_pictures(id, link)" +
-                " VALUES (@image)", new { images });
-        await dapperContext.Command<BookElement>(queryObject2);
-        var result = new QueryObject(
-            "", new {}); //Написать queryObject и queryObject2 JOIN
-        
-        return await dapperContext.CommandWithResponse<BookElement>(result);
+        var query = new QueryObject(
+            @"insert into book_elements(type, title, description)
+                 values (@Type, @Data, @Description)
+                 returning *",
+            data);
+
+        return dapperContext.CommandWithResponse<BookElement>(query);
     }
     
-    public Task<BookElement> PatchBookElement(string type, string title, string description, string placement, string image)
+    public Task<BookElement> UpdateAsync(int id, BookElementDbUpdate)
     {
         throw new NotImplementedException();
     }
 
-    public Task<BookElement> DeleteBookElement(string type, string title, string description, string placement, string image)
+    public async Task<BookElement> DeleteAsync(int id)
     {
         throw new NotImplementedException();
     }

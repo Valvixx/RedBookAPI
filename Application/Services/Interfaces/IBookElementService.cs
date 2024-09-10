@@ -5,9 +5,9 @@ namespace Application.Services;
 public interface IBookElementService
 {
     // CRUD. Делать апдейт через patch
-    Task CreateBookElementAsync(BookElementCreate bookElementCreate);
-    Task PatchBookElementAsync(BookElementCreate bookElementCreate);
-    Task DeleteBookElementAsync();
+    Task CreateAsync(BookElementCreate data);
+    Task UpdateAsync(int id, BookElementCreate data);
+    Task DeleteAsync(int id);
     
 
 }

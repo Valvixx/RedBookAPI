@@ -1,29 +1,29 @@
 ﻿using Application.DTO.BookElement;
 using Application.Services.Models;
+using Infrastructure.Models;
 using Infrastructure.Repository;
 
 namespace Application.Services;
 
 public class BookElementService(BookElementRepository bookElementRepository):IBookElementService
 {
-    public Task CreateBookElementAsync(BookElementCreate bookElementCreate)
+    public Task CreateAsync(BookElementCreate data)
     {
-        string type = bookElementCreate.Type.ToString();
-        string title = bookElementCreate.Title;
-        string description = bookElementCreate.Description;
-        string placement = bookElementCreate.Placement;
-        List<string> images = bookElementCreate.Image;
+        bookElementRepository.CreateAsync(new BookElementDbCreate
+        {
+            Type = data.Type,
+            Title = data.Title,
+            Description = data.Description,
+            Placement = data.Placement
+        });
+    }
 
-        bookElementRepository.AddBookElement(type, title, description, placement, images);
+    public Task UpdateAsync(int id, BookElementCreate data)
+    {
         throw new NotImplementedException();
     }
 
-    public Task PatchBookElementAsync(BookElementCreate bookElementCreate)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteBookElementAsync()
+    public Task DeleteAsync(int id)
     {
         throw new NotImplementedException();
     }

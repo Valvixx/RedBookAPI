@@ -1,12 +1,9 @@
-﻿using Application.Services.Models;
+﻿namespace Infrastructure.Models;
 
-namespace Application.DTO.BookElement;
-
-public record BookElementCreate
+public record BookElementDbCreate
 {
     public string Type { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public string Placement { get; set; }
-    public List<string> Image { get; set; }
 }
