@@ -1,10 +1,7 @@
 ﻿namespace Application.Services.Models;
 
-public class ElementType
+public enum BookElementType
 {
-    public enum Type
-    {
-        Animal,
-        Plant
-    };
+    Animal,
+    Plant
 }

@@ -1,17 +1,17 @@
 ﻿using Application.DTO.BookElement;
-using Application.Services.Models;
 using Infrastructure.Models;
 using Infrastructure.Repository;
 
 namespace Application.Services;
 
-public class BookElementService(BookElementRepository bookElementRepository):IBookElementService
+public class BookElementService(BookElementRepository bookElementRepository) : IBookElementService
 {
-    public Task CreateAsync(BookElementCreate data)
+    public async Task CreateAsync(BookElementCreate data)
     {
-        bookElementRepository.CreateAsync(new BookElementDbCreate
+        // TODO: замапать DB сущность в DTO
+        return bookElementRepository.CreateAsync(new BookElementDbCreate
         {
-            Type = data.Type,
+            Type = data.Type.ToString(),
             Title = data.Title,
             Description = data.Description,
             Placement = data.Placement
