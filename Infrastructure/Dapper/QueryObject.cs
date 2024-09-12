@@ -15,7 +15,6 @@ public class QueryObject : IQueryObject
         Params = parameters;
     }
     
-    
     public string Sql { get; }
     public object Params { get; }
 }

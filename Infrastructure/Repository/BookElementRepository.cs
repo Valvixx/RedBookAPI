@@ -6,14 +6,14 @@ using Infrastructure.Repository.Interfaces;
 
 namespace Infrastructure.Repository;
 
-public class BookElementRepository(IDapperContext dapperContext):IBookElementRepository
+public class BookElementRepository(IDapperContext dapperContext) : IBookElementRepository
 {
     public async Task<BookElement?> GetByTitleAsync(string title)
     {
         var queryObject =
             new QueryObject(
-                "SELECT * FROM book_elements WHERE title = @title", new {title});
-        
+                "SELECT * FROM book_elements WHERE title = @title", new { title });
+
         return await dapperContext.FirstOrDefault<BookElement>(queryObject);
     }
 
@@ -21,7 +21,7 @@ public class BookElementRepository(IDapperContext dapperContext):IBookElementRep
     {
         var queryObject =
             new QueryObject(
-                "SELECT * FROM book_elements WHERE type = @type", new {type});
+                "SELECT * FROM book_elements WHERE type = @type", new { type });
         return await dapperContext.FirstOrDefault<BookElement>(queryObject);
     }
 
@@ -35,10 +35,11 @@ public class BookElementRepository(IDapperContext dapperContext):IBookElementRep
 
         return dapperContext.CommandWithResponse<BookElement>(query);
     }
-    
-    public Task<BookElement> UpdateAsync(int id, BookElementDbUpdate)
+
+    public Task<BookElement> UpdateAsync(int id, BookElementDbUpdate data)
     {
-        throw new NotImplementedException();
+        var query = new QueryObject(); //TODO: Сделать апдейт запрос + делит
+        return dapperContext.CommandWithResponse<BookElement>(query);
     }
 
     public async Task<BookElement> DeleteAsync(int id)
