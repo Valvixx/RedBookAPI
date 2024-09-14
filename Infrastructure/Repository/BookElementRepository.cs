@@ -8,7 +8,7 @@ namespace Infrastructure.Repository;
 
 public class BookElementRepository(IDapperContext dapperContext) : IBookElementRepository
 {
-    public async Task<BookElement?> GetByTitleAsync(string title)
+    public async Task<BookElement?> GetByIdAsync(string title)
     {
         var queryObject =
             new QueryObject(
@@ -28,22 +28,31 @@ public class BookElementRepository(IDapperContext dapperContext) : IBookElementR
     public Task<BookElement> CreateAsync(BookElementDbCreate data)
     {
         var query = new QueryObject(
-            @"insert into book_elements(type, title, description)
-                 values (@Type, @Data, @Description)
-                 returning *",
-            data);
+            @"INSERT INTO book_elements(type, title, description, latitude, longitude)
+                 VALUES (@Type, @Data, @Description, @latitude, @longitude)
+                 returning *", new {data});
 
         return dapperContext.CommandWithResponse<BookElement>(query);
     }
 
     public Task<BookElement> UpdateAsync(int id, BookElementDbUpdate data)
     {
-        var query = new QueryObject(); //TODO: Сделать апдейт запрос + делит
+        var query = new QueryObject(
+            @"UPDATE book_elements 
+          SET type = @Type, 
+              title = @Title, 
+              description = @Description, 
+              latitude = @Latitude, 
+              longitude = @Longitude 
+          WHERE id = @Id
+          RETURNING *", new { data.Type, data.Title, data.Description, data.Latitude, data.Longitude, Id = id });
         return dapperContext.CommandWithResponse<BookElement>(query);
     }
 
     public async Task<BookElement> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var query = new QueryObject(
+            @"DELETE FROM book_elements WHERE id = @Id", new {id});
+        return await dapperContext.CommandWithResponse<BookElement>(query);
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Application.DTO.BookElement;
 using Domain.Entities;
 using Infrastructure.Models;
-using Infrastructure.Repository;
+using Infrastructure.Repository.Interfaces;
 
 namespace Application.Services;
 
-public class BookElementService(BookElementRepository bookElementRepository) : IBookElementService
+public class BookElementService(IBookElementRepository bookElementRepository) : IBookElementService
 {
     public async Task<BookElement> CreateAsync(BookElementCreate data)
     {
