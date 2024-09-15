@@ -1,36 +1,76 @@
+networks:
+  external:
+    driver: bridge
+  internal:
+    driver: bridge
+  files:
+    driver: bridge
+  postgres:
+    driver: bridge
+
 services:
-  
+  api:
+    build:
+      context: api/
+      dockerfile: Dockerfile
+    networks:
+      - external
+      - internal
+    ports:
+      - "8080:8080"
+    depends_on:
+      - file-service
+      - database
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ENV}
+    restart: always
+    deploy:
+      replicas: 1
+
+  file-service:
+    build:
+      context: file-service
+    ports:
+      - 10002:10002
+    depends_on:
+      - minio
+    networks:
+      - internal
+      - files
+    deploy:
+      replicas: 1
+
   minio:
     image: minio/minio:latest
-    command: server --console-address ":9001" /data/
+    networks:
+      - files
     ports:
-      - "9002:9000"
-      - "9001:9001"
+      - '9000:9000' 
+      - "9099:9099"
+    expose:
+      - "9000"
     environment:
-      MINIO_ROOT_USER: ozontech
+      MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     volumes:
-      - minio-storage:/data
-    networks:
-      - redbook
-  
-  postgres_db:
-    container_name: postgres_db
-    image: postgres:latest
+      - storage-minio:/data
+    command: server --address ":9099" --console-address ":9000" /data
+    restart: always 
+
+  database:
+    image: postgres:16
+    restart: always
     environment:
       POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'admin'
-      POSTGRES_DB: redbookdb
+      POSTGRES_PASSWORD: 'root'
+      POSTGRES_DB: 'production'
+    networks:
+      - internal
     ports:
       - "5432:5432"
-    networks:
-      - redbook
     volumes:
       - database-pg:/var/lib/postgresql/data
 
 volumes:
-  minio-storage:
+  storage-minio:
   database-pg:
-
-networks:
-  redbook:

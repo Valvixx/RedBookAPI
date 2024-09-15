@@ -1,5 +1,6 @@
 ﻿using Application.DTO.BookElement;
 using Application.Services;
+using Application.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -19,5 +20,23 @@ public class BookElementController : ControllerBase
     public async Task<IActionResult> CreateAsync(BookElementCreate bookElementCreate)
     {
         return Ok(await _bookElementService.CreateAsync(bookElementCreate));
+    }
+    
+    [HttpPatch("Update")]
+    public async Task<IActionResult> UpdateAsync(int id,BookElementUpdate bookElementUpdate)
+    {
+        return Ok(await _bookElementService.UpdateAsync(id, bookElementUpdate));
+    }
+
+    [HttpDelete("Delete")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        return Ok(await _bookElementService.DeleteAsync(id));
+    }
+
+    [HttpGet("GetAllByType")]
+    public async Task<IActionResult> GetAllByTypeAsync(BookElementType type)
+    {
+        return Ok(await _bookElementService.GetAllByType(type));
     }
 }
