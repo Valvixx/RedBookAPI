@@ -29,8 +29,8 @@ public class BookElementRepository(IDapperContext dapperContext) : IBookElementR
     {
         var query = new QueryObject(
             @"INSERT INTO book_elements(type, title, description, latitude, longitude)
-                 VALUES (@Type, @Data, @Description, @latitude, @longitude)
-                 returning *", new {data});
+                 VALUES (@Type, @Title, @Description, @Latitude, @Longitude)
+                 returning *", data);
 
         return dapperContext.CommandWithResponse<BookElement>(query);
     }
