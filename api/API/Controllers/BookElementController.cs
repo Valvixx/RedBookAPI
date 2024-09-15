@@ -31,12 +31,19 @@ public class BookElementController : ControllerBase
     [HttpDelete("Delete")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
-        return Ok(await _bookElementService.DeleteAsync(id));
+        await _bookElementService.DeleteAsync(id);
+        return Ok("Succes");
     }
 
     [HttpGet("GetAllByType")]
     public async Task<IActionResult> GetAllByTypeAsync(BookElementType type)
     {
         return Ok(await _bookElementService.GetAllByType(type));
+    }
+
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        return Ok(await _bookElementService.GetById(id));
     }
 }
