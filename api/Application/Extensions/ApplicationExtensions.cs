@@ -1,4 +1,6 @@
-﻿using Application.Services;
+﻿using Application.Microservices.MailService;
+using Application.Microservices.MailService.Interfaces;
+using Application.Services;
 using Infrastructure.Dapper;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Repository;
@@ -14,6 +16,7 @@ public static class ApplicationExtensions
 
         services.AddScoped<IBookElementRepository, BookElementRepository>();
         services.AddScoped<IBookElementService, BookElementService>();
+        services.AddScoped<IMailService, MailService>();
         services.AddScoped<IDapperSettings, DapperSettings>();
         services.AddScoped<IDapperContext, DapperContext>();
         

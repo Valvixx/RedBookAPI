@@ -36,10 +36,10 @@ public class BookElementService(IBookElementRepository bookElementRepository) : 
         return await bookElementRepository.DeleteAsync(id);
     }
 
-    public Task<BookElement> GetAllByType(BookElementType type)
-    {
-        return await bookElementRepository.GetAllByTypeAsync(type); //TODO: Изменить тип данных в репозитории
-    }
+    // public Task<BookElement> GetAllByType(BookElementType type)
+    // {
+    //     return await bookElementRepository.GetAllByTypeAsync(type); //TODO: Изменить тип данных в репозитории
+    // }
 
     public Task<BookElement> GetById(int id)
     {

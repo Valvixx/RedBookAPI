@@ -20,7 +20,21 @@ services:
       - "8080:8080"
     depends_on:
       - file-service
+      - email-service
       - database
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ENV}
+    restart: always
+    deploy:
+      replicas: 1
+
+  email-service:
+    build:
+      context: email-service
+    networks:
+      - internal
+    ports:
+      - "5100:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENV}
     restart: always

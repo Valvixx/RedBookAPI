@@ -1,6 +1,5 @@
 ﻿using Application.DTO.BookElement;
 using Application.Services;
-using Application.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -34,9 +33,9 @@ public class BookElementController : ControllerBase
         return Ok(await _bookElementService.DeleteAsync(id));
     }
 
-    [HttpGet("GetAllByType")]
-    public async Task<IActionResult> GetAllByTypeAsync(BookElementType type)
-    {
-        return Ok(await _bookElementService.GetAllByType(type));
-    }
+    // [HttpGet("GetAllByType")]
+    // public async Task<IActionResult> GetAllByTypeAsync(BookElementType type)
+    // {
+    //     return Ok(await _bookElementService.GetAllByType(type));
+    // }
 }
