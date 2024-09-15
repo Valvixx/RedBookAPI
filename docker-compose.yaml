@@ -1,5 +1,3 @@
-version: '3.7'
-
 networks:
   external:
     driver: bridge
@@ -22,7 +20,7 @@ services:
       - "8080:8080"
     depends_on:
       - file-service
-      - postgres_db
+      - database
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENV}
     restart: always
@@ -59,17 +57,17 @@ services:
     command: server --address ":9099" --console-address ":9000" /data
     restart: always 
 
-  postgres_db:
+  database:
     image: postgres:16
     restart: always
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'root'
       POSTGRES_DB: 'production'
-    ports:
-      - "5432:5432"
     networks:
       - internal
+    ports:
+      - "5432:5432"
     volumes:
       - database-pg:/var/lib/postgresql/data
 
