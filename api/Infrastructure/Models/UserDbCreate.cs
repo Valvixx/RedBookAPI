@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities;
 
-public class User
+namespace Infrastructure.Models;
+
+public class UserDbCreate
 {
-    public int Id { get; set; }
     public UserType Type { get; set; }
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
