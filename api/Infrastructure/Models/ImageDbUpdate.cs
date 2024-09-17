@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Models;
+﻿namespace Application.DTO;
 
 public class ImageDbUpdate
 {

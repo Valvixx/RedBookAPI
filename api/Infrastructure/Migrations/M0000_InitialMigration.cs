@@ -18,6 +18,12 @@ public class M0000_InitialMigration: Migration
             .WithColumn("element_id").AsInt64().NotNullable().ForeignKey()
             .WithColumn("reference").AsString().NotNullable();
         Create.ForeignKey().FromTable("element_images").ForeignColumn("element_id").ToTable("book_elements").PrimaryColumn("id");
+
+        Create.Table("coordinates")
+            .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
+            .WithColumn("element_id").AsInt64().NotNullable().ForeignKey()
+            .WithColumn("coordinates").AsCustom("json").NotNullable();
+        Create.ForeignKey().FromTable("coordinates").ForeignColumn("element_id").ToTable("book_elements").PrimaryColumn("id");
         
         Create.Table("users")
             .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
