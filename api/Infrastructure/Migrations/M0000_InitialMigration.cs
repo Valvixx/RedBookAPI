@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using FluentMigrator;
+﻿using FluentMigrator;
 
 namespace Infrastructure.Migrations;
 
@@ -10,18 +9,16 @@ public class M0000_InitialMigration: Migration
     {
         Create.Table("book_elements")
             .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
-            .WithColumn("type").AsString().NotNullable()
+            .WithColumn("type").AsInt16().NotNullable()
             .WithColumn("title").AsString().NotNullable().Unique()
-            .WithColumn("description").AsString().NotNullable()
-            .WithColumn("latitude").AsDouble()
-            .WithColumn("longitude").AsDouble();
+            .WithColumn("description").AsString().NotNullable();
         
         Create.Table("element_images")
             .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
             .WithColumn("element_id").AsInt64().NotNullable().ForeignKey()
             .WithColumn("reference").AsString().NotNullable();
         Create.ForeignKey().FromTable("element_images").ForeignColumn("element_id").ToTable("book_elements").PrimaryColumn("id");
-
+        
         Create.Table("users")
             .WithColumn("user_id").AsInt32().Identity().NotNullable().Unique().PrimaryKey()
             .WithColumn("display_name").AsString(60).NotNullable()
