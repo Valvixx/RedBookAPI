@@ -19,21 +19,38 @@ public class UserRepository(DapperContext dapperContext) : IUserRepository
 
     public Task<User> UpdateAsync(int id, UserDbUpdate data)
     {
-        throw new NotImplementedException();
+        var query = new QueryObject(
+            @"UPDATE users 
+          SET type = @Type, 
+              username = @Username, 
+              email = @Email, 
+              password = @Password 
+          WHERE id = @Id
+          RETURNING *", new { data.Type, data.Username, data.Email, data.Password, id });
+        return dapperContext.CommandWithResponse<User>(query);
     }
 
-    public Task<User> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var query = new QueryObject(
+            @"DELETE FROM users WHERE id = @Id", new {id});
+        await dapperContext.Command<User>(query);
     }
 
-    public Task<User> GetByIdAsync(int id)
+    public async Task<User?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var queryObject =
+            new QueryObject(
+                "SELECT * FROM users WHERE id = @id", new { id });
+
+        return await dapperContext.FirstOrDefault<User>(queryObject);
     }
 
-    public Task<User> GetAllAsync()
+    public async Task<User?> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var queryObject =
+            new QueryObject(
+                "SELECT * FROM users", new {});
+        return await dapperContext.FirstOrDefault<User>(queryObject);
     }
 }
