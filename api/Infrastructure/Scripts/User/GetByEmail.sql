@@ -6,4 +6,4 @@
     u.created_date      as "CreatedDate",
     u.role              as "Role"
 FROM users u
-WHERE email = @Email AND password = @Password
+WHERE email = @Email

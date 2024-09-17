@@ -4,8 +4,8 @@ namespace Infrastructure.Models;
 
 public class UserDbUpdate
 {
-    public UserType? Type { get; set; }
-    public string? Username { get; set; } = string.Empty;
-    public string? Email { get; set; } = string.Empty;
-    public string? Password { get; set; } = string.Empty;
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public UserRole Role { get; set; }
 }

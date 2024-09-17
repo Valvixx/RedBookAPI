@@ -60,18 +60,114 @@ namespace Infrastructure.Scripts.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM users
+        ///WHERE user_id = @UserId.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SELECT
-        ///    user_id         as &quot;UserId&quot;,
-        ///    display_name    as &quot;DisplayName&quot;,
-        ///    user_name       as &quot;UserName&quot;,
-        ///    email           as &quot;Email&quot;,
-        ///    password        as &quot;Password&quot;,
-        ///    created_date    as &quot;CreatedDate&quot;
+        ///    u.user_id           as &quot;UserId&quot;,
+        ///    u.user_name         as &quot;UserName&quot;,
+        ///    u.email             as &quot;Email&quot;,
+        ///    u.password          as &quot;Password&quot;,
+        ///    u.created_date      as &quot;CreatedDate&quot;,
+        ///    u.role              as &quot;Role&quot;
+        ///FROM users u.
+        /// </summary>
+        internal static string GetAll {
+            get {
+                return ResourceManager.GetString("GetAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT
+        ///    u.user_id           as &quot;UserId&quot;,
+        ///    u.user_name         as &quot;UserName&quot;,
+        ///    u.email             as &quot;Email&quot;,
+        ///    u.password          as &quot;Password&quot;,
+        ///    u.created_date      as &quot;CreatedDate&quot;,
+        ///    u.role              as &quot;Role&quot;
+        ///FROM users u
         ///WHERE email = @Email AND password = @Password.
         /// </summary>
         internal static string GetByCredentials {
             get {
                 return ResourceManager.GetString("GetByCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT
+        ///    u.user_id           as &quot;UserId&quot;,
+        ///    u.user_name         as &quot;UserName&quot;,
+        ///    u.email             as &quot;Email&quot;,
+        ///    u.password          as &quot;Password&quot;,
+        ///    u.created_date      as &quot;CreatedDate&quot;,
+        ///    u.role              as &quot;Role&quot;
+        ///FROM users u
+        ///WHERE email = @Email.
+        /// </summary>
+        internal static string GetByEmail {
+            get {
+                return ResourceManager.GetString("GetByEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT
+        ///    u.user_id           as &quot;UserId&quot;,
+        ///    u.user_name         as &quot;UserName&quot;,
+        ///    u.email             as &quot;Email&quot;,
+        ///    u.password          as &quot;Password&quot;,
+        ///    u.created_date      as &quot;CreatedDate&quot;,
+        ///    u.role              as &quot;Role&quot;
+        ///FROM users u
+        ///WHERE user_id = @UserId.
+        /// </summary>
+        internal static string GetById {
+            get {
+                return ResourceManager.GetString("GetById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INSERT INTO users (user_name, email, password, created_date, role)
+        ///VALUES (@UserName, @Email, @Password, @CreatedDate, @Role)
+        ///
+        ///.
+        /// </summary>
+        internal static string Insert {
+            get {
+                return ResourceManager.GetString("Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE users u
+        ///SET
+        ///    user_name       = @UserName,
+        ///    email           = @Email,
+        ///    password        = @Password,
+        ///    role            = @Role
+        ///WHERE user_id = @UserId
+        ///RETURNING
+        ///    u.user_id           as &quot;UserId&quot;,
+        ///    u.user_name         as &quot;UserName&quot;,
+        ///    u.email             as &quot;Email&quot;,
+        ///    u.password          as &quot;Password&quot;,
+        ///    u.created_date      as &quot;CreatedDate&quot;,
+        ///    u.role              as &quot;Role&quot;
+        ///    .
+        /// </summary>
+        internal static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
     }

@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using System.Text;
 using Application.DTO.Auth;
-using Domain.Entities;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -36,7 +35,6 @@ public class AuthService : IAuthService
         var claims = new[]
         {
             new Claim("UserId", user.UserId.ToString()),
-            new Claim("DisplayName", user.DisplayName),
             new Claim("UserName", user.UserName),
             new Claim("Email", user.Email)
         };
