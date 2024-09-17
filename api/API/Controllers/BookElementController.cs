@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/book-element")]
 public class BookElementController : ControllerBase
 {
     private IBookElementService _bookElementService;
@@ -16,34 +16,46 @@ public class BookElementController : ControllerBase
         _bookElementService = bookElementService;
     }
 
-    [HttpPost("Create")]
-    public async Task<IActionResult> CreateAsync(BookElementCreate bookElementCreate)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] BookElementCreate bookElementCreate)
     {
-        return Ok(await _bookElementService.CreateAsync(bookElementCreate));
+        await _bookElementService.CreateAsync(bookElementCreate);;
+        return Ok();
     }
     
-    [HttpPatch("Update")]
-    public async Task<IActionResult> UpdateAsync(int id,BookElementUpdate bookElementUpdate)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] BookElementUpdate bookElementUpdate)
     {
         return Ok(await _bookElementService.UpdateAsync(id, bookElementUpdate));
     }
 
-    [HttpDelete("Delete")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         await _bookElementService.DeleteAsync(id);
         return Ok("Succes");
     }
 
-    [HttpGet("GetAllByType")]
-    public async Task<IActionResult> GetAllByTypeAsync(BookElementType type)
+    [HttpGet("by-type/{type:int}")]
+    public async Task<IActionResult> GetAllByTypeAsync([FromRoute] BookElementType type)
     {
         return Ok(await _bookElementService.GetAllByType(type));
     }
 
-    [HttpGet("GetById")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
         return Ok(await _bookElementService.GetById(id));
+    }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchByName([FromQuery] string? name = "")
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return BadRequest();
+        }
+
+        return Ok(await _bookElementService.SearchByNameAsync(name));
     }
 }

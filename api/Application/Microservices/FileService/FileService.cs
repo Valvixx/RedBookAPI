@@ -9,11 +9,11 @@ namespace Application.Microservices.FileService;
 public class FileService(ILogger<FileService> logger) : IFileService
 {
     private const string BaseUrl = "http://file-service:10002";
+    private readonly HttpClient client = new HttpClient();
 
 
     public async Task<string> UploadFileAsync(byte[] file)
     {
-        using var client = new HttpClient();
         var image = new ImageData { Image = Convert.ToBase64String(file) };
         var response = await client.PostAsync($"{BaseUrl}/api/files", new StringContent(JsonConvert.SerializeObject(image), Encoding.UTF8, "application/json"));
         var content = await response.Content.ReadAsStringAsync();
@@ -25,9 +25,21 @@ public class FileService(ILogger<FileService> logger) : IFileService
         return content;
     }
 
-    public async Task<byte[]> DownloadFileAsync(string fileId)
+    public async Task<string> GetLinkById(Guid fileId)
     {
-        using var client = new HttpClient();
+        var response = await client.GetAsync($"{BaseUrl}/api/files/{fileId}/link/");
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            logger.LogError($"Failed to get file link. {content}");
+        }
+
+        return content;
+    }
+
+    public async Task<byte[]> DownloadFileAsync(Guid fileId)
+    {
         var response = await client.GetAsync($"{BaseUrl}/api/files/{fileId}");
         var content = await response.Content.ReadAsByteArrayAsync();
         if (!response.IsSuccessStatusCode)

@@ -1,9 +1,9 @@
 ﻿UPDATE users u
 SET
-    user_name       = @UserName,
-    email           = @Email,
-    password        = @Password,
-    role            = @Role
+    u.user_name       = @UserName,
+    u.email           = @Email,
+    u.password        = @Password,
+    u.role            = @Role
 WHERE user_id = @UserId
 RETURNING
     u.user_id           as "UserId",

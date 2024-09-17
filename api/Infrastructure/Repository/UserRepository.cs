@@ -1,12 +1,13 @@
 ﻿using Domain.Entities;
 using Infrastructure.Dapper;
+using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.Repository.Interfaces;
 using Infrastructure.Scripts.User;
 
 namespace Infrastructure.Repository;
 
-public class UserRepository(DapperContext dapperContext) : IUserRepository
+public class UserRepository(IDapperContext dapperContext) : IUserRepository
 {
     public async Task<User?> GetByCredentials(string email, string password)
     {
