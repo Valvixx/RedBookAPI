@@ -8,6 +8,12 @@ namespace Infrastructure.Repository;
 
 public class UserRepository(DapperContext dapperContext) : IUserRepository
 {
+    public async Task<User?> GetByCredentials(string email, string password)
+    {
+        var query = new QueryObject(PostgresUser.GetByCredentials, new { Email = email, Password = password });
+        return await dapperContext.FirstOrDefault<User>(query);
+    }
+
     public Task<User> CreateAsync(UserDbCreate data)
     {
         var query = new QueryObject(
