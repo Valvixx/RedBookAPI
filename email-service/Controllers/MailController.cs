@@ -8,7 +8,7 @@ namespace email_service.Controllers;
 [Route("[controller]")]
 public class MailController(IMailService mailService) : ControllerBase
 {
-    [HttpPost("send_mail")]
+    [HttpPost("send")]
     public async Task<IActionResult> SendMail([FromBody] MailRequest request)
     {
         await mailService.SendEmailAsync(request);

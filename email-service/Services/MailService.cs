@@ -21,24 +21,24 @@ public class MailService : IMailService
         var email = new MimeMessage
         {
             Sender = MailboxAddress.Parse(_mailSettings.Username),
-            To = { MailboxAddress.Parse(mailRequest.ToEmail) },
+            To = { MailboxAddress.Parse(mailRequest.Recepient) },
             Subject = mailRequest.Subject
         };
 
         var builder = new BodyBuilder();
 
-        if (mailRequest.Attachments != null)
-        {
-            byte[] fileBytes;
-            
-            foreach (var file in mailRequest.Attachments)
-            {
-                using var ms = new MemoryStream();
-                file.CopyTo(ms);
-                fileBytes = ms.ToArray();
-                builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
-            }
-        }
+        // if (mailRequest.Attachments != null)
+        // {
+        //     byte[] fileBytes;
+        //     
+        //     foreach (var file in mailRequest.Attachments)
+        //     {
+        //         using var ms = new MemoryStream();
+        //         file.CopyTo(ms);
+        //         fileBytes = ms.ToArray();
+        //         builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
+        //     }
+        // }
 
         builder.HtmlBody = mailRequest.Body;
         email.Body = builder.ToMessageBody();

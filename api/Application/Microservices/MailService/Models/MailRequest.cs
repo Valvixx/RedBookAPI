@@ -1,4 +1,4 @@
-﻿namespace email_service.Models.Service;
+﻿namespace Application.Microservices.MailService.Models;
 
 public class MailRequest
 {

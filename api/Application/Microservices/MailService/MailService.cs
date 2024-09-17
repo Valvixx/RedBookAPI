@@ -1,27 +1,36 @@
 ﻿using Application.Microservices.MailService.Interfaces;
+using Application.Microservices.MailService.Models;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Application.Microservices.MailService;
 
-public class MailService : IMailService
+public class MailService(ILogger<MailService> logger) : IMailService
 {
-    private readonly string _baseUrl = "http://email-service:8080";
-    private readonly HttpClient _client;
+    private const string BaseUrl = "http://email-service:5100";
+    private readonly HttpClient _client = new();
 
-    public MailService()
-    {
-        _client = new HttpClient();
-    }
-    
     public async Task<string> Ping()
     {
-        var response = await _client.GetAsync($"{_baseUrl}/mail/ping");
+        var response = await _client.GetAsync($"{BaseUrl}/mail/ping");
         var content = await response.Content.ReadAsStringAsync();
         
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Failed to ping email-service");
+            logger.LogError($"Failed to ping email-service");
         }
 
         return content;
+    }
+
+    public async Task SendMessage(MailRequest request)
+    {
+        var content = new StringContent(JsonConvert.SerializeObject(request));
+        var response = await _client.PostAsync($"{BaseUrl}/mail/send", content);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            logger.LogError($"Failed to send mail message");
+        }
     }
 }
