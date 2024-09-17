@@ -7,7 +7,7 @@ namespace Application.Microservices.MailService;
 
 public class MailService(ILogger<MailService> logger) : IMailService
 {
-    private const string BaseUrl = "http://email-service:5100";
+    private const string BaseUrl = "http://email-service:8080";
     private readonly HttpClient _client = new();
 
     public async Task<string> Ping()
