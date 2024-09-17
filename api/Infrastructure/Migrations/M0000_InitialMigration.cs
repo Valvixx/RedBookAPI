@@ -9,11 +9,9 @@ public class M0000_InitialMigration: Migration
     {
         Create.Table("book_elements")
             .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
-            .WithColumn("type").AsString().NotNullable()
+            .WithColumn("type").AsInt16().NotNullable()
             .WithColumn("title").AsString().NotNullable().Unique()
-            .WithColumn("description").AsString().NotNullable()
-            .WithColumn("latitude").AsDouble()
-            .WithColumn("longitude").AsDouble();
+            .WithColumn("description").AsString().NotNullable();
         
         Create.Table("element_images")
             .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
@@ -23,7 +21,8 @@ public class M0000_InitialMigration: Migration
         
         Create.Table("users")
             .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
-            .WithColumn("is_admin").AsBoolean().NotNullable()
+            .WithColumn("type").AsInt16().NotNullable()
+            .WithColumn("username").AsString().NotNullable()
             .WithColumn("email").AsString().NotNullable()
             .WithColumn("password").AsString().NotNullable();
         

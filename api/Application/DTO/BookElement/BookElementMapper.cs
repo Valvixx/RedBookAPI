@@ -9,8 +9,6 @@ public class BookElementMapper
             Type = element.Type,
             Title = element.Title,
             Description = element.Description,
-            Latitude = element.Latitude,
-            Longitude = element.Longitude
         };
     }
     

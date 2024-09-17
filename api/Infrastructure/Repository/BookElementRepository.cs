@@ -1,4 +1,5 @@
-﻿using Infrastructure.Dapper;
+﻿using Application.Services.Models;
+using Infrastructure.Dapper;
 using Infrastructure.Dapper.Interfaces;
 using Domain.Entities;
 using Infrastructure.Models;
@@ -8,16 +9,16 @@ namespace Infrastructure.Repository;
 
 public class BookElementRepository(IDapperContext dapperContext) : IBookElementRepository
 {
-    public async Task<BookElement?> GetByIdAsync(string title)
+    public async Task<BookElement?> GetByIdAsync(int id)
     {
         var queryObject =
             new QueryObject(
-                "SELECT * FROM book_elements WHERE title = @title", new { title });
+                "SELECT * FROM book_elements WHERE id = @id", new { id });
 
         return await dapperContext.FirstOrDefault<BookElement>(queryObject);
     }
 
-    public async Task<BookElement?> GetAllByTypeAsync(string type)
+    public async Task<BookElement?> GetAllByTypeAsync(BookElementType type)
     {
         var queryObject =
             new QueryObject(
@@ -28,8 +29,8 @@ public class BookElementRepository(IDapperContext dapperContext) : IBookElementR
     public Task<BookElement> CreateAsync(BookElementDbCreate data)
     {
         var query = new QueryObject(
-            @"INSERT INTO book_elements(type, title, description, latitude, longitude)
-                 VALUES (@Type, @Title, @Description, @Latitude, @Longitude)
+            @"INSERT INTO book_elements(type, title, description)
+                 VALUES (@Type, @Title, @Description)
                  returning *", data);
 
         return dapperContext.CommandWithResponse<BookElement>(query);
@@ -41,18 +42,16 @@ public class BookElementRepository(IDapperContext dapperContext) : IBookElementR
             @"UPDATE book_elements 
           SET type = @Type, 
               title = @Title, 
-              description = @Description, 
-              latitude = @Latitude, 
-              longitude = @Longitude 
+              description = @Description 
           WHERE id = @Id
-          RETURNING *", new { data.Type, data.Title, data.Description, data.Latitude, data.Longitude, Id = id });
+          RETURNING *", new { data.Type, data.Title, data.Description, Id = id });
         return dapperContext.CommandWithResponse<BookElement>(query);
     }
 
-    public async Task<BookElement> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         var query = new QueryObject(
             @"DELETE FROM book_elements WHERE id = @Id", new {id});
-        return await dapperContext.CommandWithResponse<BookElement>(query);
+        await dapperContext.Command<BookElement>(query);
     }
 }

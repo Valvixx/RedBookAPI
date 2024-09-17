@@ -10,14 +10,11 @@ public class BookElementService(IBookElementRepository bookElementRepository) : 
 {
     public async Task<BookElement> CreateAsync(BookElementCreate data)
     {
-        //TODO: замапать DB сущность в DTO
         return await bookElementRepository.CreateAsync(new BookElementDbCreate
         {
             Type = data.Type,
             Title = data.Title,
             Description = data.Description,
-            Latitude = data.Latitude,
-            Longitude = data.Longitude
         });
     }
 
@@ -31,18 +28,18 @@ public class BookElementService(IBookElementRepository bookElementRepository) : 
         });
     }
 
-    public async Task<BookElement> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        return await bookElementRepository.DeleteAsync(id);
+        await bookElementRepository.DeleteAsync(id);
     }
 
-    public Task<BookElement> GetAllByType(BookElementType type)
+    public async Task<BookElement> GetAllByType(BookElementType type)
     {
-        return await bookElementRepository.GetAllByTypeAsync(type); //TODO: Изменить тип данных в репозитории
+        return await bookElementRepository.GetAllByTypeAsync(type);
     }
 
-    public Task<BookElement> GetById(int id)
+    public async Task<BookElement> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await bookElementRepository.GetByIdAsync(id);
     }
 }
