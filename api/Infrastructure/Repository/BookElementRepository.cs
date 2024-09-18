@@ -1,10 +1,10 @@
-﻿using Application.DTO;
-using Application.Services.Models;
+﻿using Application.Services.Models;
 using Infrastructure.Dapper;
 using Infrastructure.Dapper.Interfaces;
 using Domain.Entities;
 using Infrastructure.Models;
 using Infrastructure.Repository.Interfaces;
+using Infrastructure.Scripts.BookElement;
 
 namespace Infrastructure.Repository;
 
@@ -12,47 +12,46 @@ public class BookElementRepository(IDapperContext dapperContext) : IBookElementR
 {
     public async Task<BookElement?> GetByIdAsync(int id)
     {
-        var queryObject =
-            new QueryObject(
-                "SELECT * FROM book_elements WHERE id = @id", new { id });
-
+        var queryObject = new QueryObject(PostgresBookElement.GetById, new { Id = id });
         return await dapperContext.FirstOrDefault<BookElement>(queryObject);
     }
 
-    public async Task<BookElement?> GetAllByTypeAsync(BookElementType type)
+    public async Task<List<BookElement>> GetAllByTypeAsync(BookElementType type)
     {
-        var queryObject =
-            new QueryObject(
-                "SELECT * FROM book_elements WHERE type = @type", new { type });
-        return await dapperContext.FirstOrDefault<BookElement>(queryObject);
+        var queryObject = new QueryObject(PostgresBookElement.GetAllByType, new { Type = (int)type });
+        return await dapperContext.ListOrEmpty<BookElement>(queryObject) ?? new List<BookElement>();
     }
 
-    public Task<BookElement> CreateAsync(BookElementDbCreate data)
+    public async Task<List<BookElement>> SearchByNameAsync(string name)
     {
-        var query = new QueryObject(
-            @"INSERT INTO book_elements(type, title, description)
-                 VALUES (@Type, @Title, @Description)
-                 returning *", data);
+        var queryObject = new QueryObject(PostgresBookElement.SearchByName, new { NameSearch = $"%{name}%" });
+        return await dapperContext.ListOrEmpty<BookElement>(queryObject) ?? new List<BookElement>();
+    }
 
-        return dapperContext.CommandWithResponse<BookElement>(query);
+    public async Task CreateAsync(BookElementDbCreate data)
+    {
+        var query = new QueryObject(PostgresBookElement.Insert, data);
+        await dapperContext.Command<BookElement>(query);
     }
 
     public Task<BookElement> UpdateAsync(int id, BookElementDbUpdate data)
     {
-        var query = new QueryObject(
-            @"UPDATE book_elements 
-          SET type = @Type, 
-              title = @Title, 
-              description = @Description 
-          WHERE id = @Id
-          RETURNING *", new { data.Type, data.Title, data.Description, Id = id });
+        var parameters = new
+        {
+            Id = id,
+            Type = data.Type,
+            Name = data.Name,
+            Description = data.Description
+        };
+        
+        var query = new QueryObject(PostgresBookElement.Update, parameters);
+        
         return dapperContext.CommandWithResponse<BookElement>(query);
     }
 
     public async Task DeleteAsync(int id)
     {
-        var query = new QueryObject(
-            @"DELETE FROM book_elements WHERE id = @Id", new {id});
+        var query = new QueryObject(PostgresBookElement.Delete, new { Id = id });
         await dapperContext.Command<BookElement>(query);
     }
 }

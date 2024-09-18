@@ -6,9 +6,10 @@ namespace Application.Services;
 
 public interface IBookElementService
 {
-    Task<BookElement> CreateAsync(BookElementCreate data);
+    Task CreateAsync(BookElementCreate data);
     Task<BookElement> UpdateAsync(int id, BookElementUpdate data);
     Task DeleteAsync(int id);
-    Task<BookElement> GetAllByType(BookElementType type);
-    Task<BookElement> GetById(int id);
+    Task<List<BookElement>> GetAllByType(BookElementType type);
+    Task<BookElement?> GetById(int id);
+    Task<List<BookElement>> SearchByNameAsync(string name);
 }
