@@ -22,6 +22,7 @@ services:
       - file-service
       - email-service
       - database
+      - nginx
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENV}
     restart: always
@@ -66,8 +67,6 @@ services:
       - '81:81' # Admin Web Port
     networks:
       - external
-    links:
-      - api:api
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
