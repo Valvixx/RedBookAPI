@@ -1,4 +1,5 @@
-﻿using Application.DTO;
+﻿using System.Text.Json;
+using Application.DTO;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Models;
@@ -8,14 +9,21 @@ namespace Application.Services;
 
 public class CoordinatesService(ICoordinatesRepository coordinatesRepository) : ICoordinatesService
 {
-    public async Task<Coordinates> CreateAsync(CoordinatesDbCreate data)
+    public async Task<Coordinate> CreateAsync(CoordinatesDbCreate data)
     {
         return await coordinatesRepository.CreateAsync(data);
     }
 
-    public async Task<Coordinates> UpdateAsync(int id, CoordinatesDbUpdate data)
+    public async Task<Coordinate> UpdateAsync(int id, CoordinatesDbUpdate data)
     {
-        return await coordinatesRepository.UpdateAsync(id, data);
+        var upd = await coordinatesRepository.UpdateAsync(id, data);
+        var coord = new Coordinate()
+        {
+            Id = upd.Id,
+            ElementId = upd.ElementId,
+            Coordinates = JsonSerializer.Deserialize<List<CoordinatesDto>>(upd.Coordinates)
+        };
+        return coord;
     }
 
     public async Task DeleteAsync(int id)
@@ -23,12 +31,12 @@ public class CoordinatesService(ICoordinatesRepository coordinatesRepository) : 
         await coordinatesRepository.DeleteAsync(id);
     }
 
-    public async Task<Coordinates?> GetAllByElementId(int id)
+    public async Task<Coordinate?> GetAllByElementId(int id)
     {
         return await coordinatesRepository.GetAllByElementIdAsync(id);
     }
 
-    public async Task<Coordinates?> GetById(int id)
+    public async Task<Coordinate?> GetById(int id)
     {
         return await coordinatesRepository.GetByIdAsync(id);
     }

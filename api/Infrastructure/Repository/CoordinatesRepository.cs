@@ -10,24 +10,24 @@ namespace Infrastructure.Repository;
 
 public class CoordinatesRepository(IDapperContext dapperContext) : ICoordinatesRepository
 {
-    public async Task<Coordinates?> GetByIdAsync(int id)
+    public async Task<Coordinate?> GetByIdAsync(int id)
     {
         var queryObject =
             new QueryObject(
                 "SELECT * FROM coordinates WHERE id = @id", new { id });
 
-        return await dapperContext.FirstOrDefault<Coordinates>(queryObject);
+        return await dapperContext.FirstOrDefault<Coordinate>(queryObject);
     }
 
-    public async Task<Coordinates?> GetAllByElementIdAsync(int elementId)
+    public async Task<Coordinate?> GetAllByElementIdAsync(int elementId)
     {
         var queryObject =
             new QueryObject(
                 "SELECT * FROM coordinates WHERE element_id = @ElementId", new { elementId });
-        return await dapperContext.FirstOrDefault<Coordinates>(queryObject);
+        return await dapperContext.FirstOrDefault<Coordinate>(queryObject);
     }
 
-    public Task<Coordinates> CreateAsync(CoordinatesDbCreate data)
+    public Task<Coordinate> CreateAsync(CoordinatesDbCreate data)
     {
         string jsonCoordinates = JsonSerializer.Serialize(data.Coordinates);
         var query = new QueryObject(
@@ -35,10 +35,10 @@ public class CoordinatesRepository(IDapperContext dapperContext) : ICoordinatesR
                  VALUES (@ElementId, @JsonCoordinates) 
                  RETURNING *", new {data.ElementId, jsonCoordinates});
         
-        return dapperContext.CommandWithResponse<Coordinates>(query);
+        return dapperContext.CommandWithResponse<Coordinate>(query);
     }
 
-    public Task<Coordinates> UpdateAsync(int id, CoordinatesDbUpdate data)
+    public Task<DbCoordinates> UpdateAsync(int id, CoordinatesDbUpdate data)
     {
         string jsonCoordinates = JsonSerializer.Serialize(data.Coordinates);
 
@@ -49,15 +49,15 @@ public class CoordinatesRepository(IDapperContext dapperContext) : ICoordinatesR
           WHERE id = @Id
           RETURNING *", new
             {
-                data.ElementId, jsonCoordinates, Id = id
+                ElementId = data.ElementId, Coordinates = jsonCoordinates, Id = id
             });
-        return dapperContext.CommandWithResponse<Coordinates>(query);
+        return dapperContext.CommandWithResponse<DbCoordinates>(query);
     }
 
     public async Task DeleteAsync(int id)
     {
         var query = new QueryObject(
             @"DELETE FROM coodinates WHERE id = @Id", new {id});
-        await dapperContext.Command<Coordinates>(query);
+        await dapperContext.Command<Coordinate>(query);
     }
 }
