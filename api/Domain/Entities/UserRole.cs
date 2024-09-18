@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public enum UserType
+public enum UserRole
 {
     Admin,
     Moderator

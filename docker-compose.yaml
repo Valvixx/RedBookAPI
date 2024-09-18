@@ -16,11 +16,26 @@ services:
     networks:
       - external
       - internal
+      - nginx
     ports:
       - "8080:8080"
     depends_on:
       - file-service
+      - email-service
       - database
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ENV}
+    restart: always
+    deploy:
+      replicas: 1
+
+  email-service:
+    build:
+      context: email-service
+    networks:
+      - internal
+    ports:
+      - "5100:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENV}
     restart: always
@@ -39,6 +54,19 @@ services:
       - files
     deploy:
       replicas: 1
+
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+    networks:
+      - external
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
 
   minio:
     image: minio/minio:latest

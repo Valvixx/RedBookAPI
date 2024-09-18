@@ -7,7 +7,7 @@ public class BookElementMapper
         return new BookElementCreate()
         {
             Type = element.Type,
-            Title = element.Title,
+            Name = element.Name,
             Description = element.Description,
         };
     }
