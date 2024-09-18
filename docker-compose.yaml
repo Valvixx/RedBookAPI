@@ -16,13 +16,13 @@ services:
     networks:
       - external
       - internal
-      - nginx
     ports:
       - "8080:8080"
     depends_on:
       - file-service
       - email-service
       - database
+      - nginx
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENV}
     restart: always
