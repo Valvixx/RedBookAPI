@@ -16,6 +16,7 @@ services:
     networks:
       - external
       - internal
+      - nginx
     ports:
       - "8080:8080"
     depends_on:
@@ -53,6 +54,19 @@ services:
       - files
     deploy:
       replicas: 1
+
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+    networks:
+      - external
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
 
   minio:
     image: minio/minio:latest
