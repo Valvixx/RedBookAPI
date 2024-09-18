@@ -4,5 +4,5 @@ namespace Application.Services;
 
 public interface IAuthService
 {
-    Task<string> AuthorizeUser(AuthLogin authData);
+    Task<LoginResponse> AuthorizeUser(LoginRequest data);
 }
