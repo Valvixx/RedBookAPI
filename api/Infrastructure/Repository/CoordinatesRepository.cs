@@ -3,10 +3,12 @@ using Domain.Entities;
 using Infrastructure.Dapper;
 using Infrastructure.Models;
 using Infrastructure.Repository.Interfaces;
+using System.Text.Json;
+using Infrastructure.Dapper.Interfaces;
 
 namespace Infrastructure.Repository;
 
-public class CoordinatesRepository(DapperContext dapperContext) : ICoordinatesRepository
+public class CoordinatesRepository(IDapperContext dapperContext) : ICoordinatesRepository
 {
     public async Task<Coordinates?> GetByIdAsync(int id)
     {
@@ -27,22 +29,28 @@ public class CoordinatesRepository(DapperContext dapperContext) : ICoordinatesRe
 
     public Task<Coordinates> CreateAsync(CoordinatesDbCreate data)
     {
+        string jsonCoordinates = JsonSerializer.Serialize(data.Coordinates);
         var query = new QueryObject(
             @"INSERT INTO coordinates (element_id, coordinates)
-                 VALUES (@ElementId, @Coordinates) 
-                 RETURNING *", data);
+                 VALUES (@ElementId, @JsonCoordinates) 
+                 RETURNING *", new {data.ElementId, jsonCoordinates});
         
         return dapperContext.CommandWithResponse<Coordinates>(query);
     }
 
     public Task<Coordinates> UpdateAsync(int id, CoordinatesDbUpdate data)
     {
+        string jsonCoordinates = JsonSerializer.Serialize(data.Coordinates);
+
         var query = new QueryObject(
             @"UPDATE coordinates 
           SET element_id = @ElementId, 
-              coordinates = @Coordinates, 
+              coordinates = @Coordinates 
           WHERE id = @Id
-          RETURNING *", new { data.ElementId, data.Coordinates, Id = id });
+          RETURNING *", new
+            {
+                data.ElementId, jsonCoordinates, Id = id
+            });
         return dapperContext.CommandWithResponse<Coordinates>(query);
     }
 

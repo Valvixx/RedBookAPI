@@ -22,7 +22,7 @@ public class M0000_InitialMigration: Migration
         Create.Table("coordinates")
             .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
             .WithColumn("element_id").AsInt64().NotNullable().ForeignKey()
-            .WithColumn("coordinates").AsCustom("json").NotNullable();
+            .WithColumn("coordinates").AsString().NotNullable();
         Create.ForeignKey().FromTable("coordinates").ForeignColumn("element_id").ToTable("book_elements").PrimaryColumn("id");
         
         Create.Table("users")

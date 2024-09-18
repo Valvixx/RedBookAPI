@@ -30,12 +30,6 @@ public class UserRepository(DapperContext dapperContext) : IUserRepository
           RETURNING *", new { data.Type, data.Username, data.Email, data.Password, id });
         return dapperContext.CommandWithResponse<User>(query);
     }
-    
-
-    public Task<User> UpdateAsync(int id, UserDbUpdate data)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task DeleteAsync(int id)
     {

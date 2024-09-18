@@ -1,4 +1,5 @@
-﻿using Application.Services.Interfaces;
+﻿using Application.DTO;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Models;
 using Infrastructure.Repository.Interfaces;
@@ -9,28 +10,26 @@ public class CoordinatesService(ICoordinatesRepository coordinatesRepository) : 
 {
     public async Task<Coordinates> CreateAsync(CoordinatesDbCreate data)
     {
-        var coordinates = data.Coordinates;
-        
-        return await coordinatesRepository.CreateAsync(coordinates);
+        return await coordinatesRepository.CreateAsync(data);
     }
 
-    public Task<Coordinates> UpdateAsync()
+    public async Task<Coordinates> UpdateAsync(int id, CoordinatesDbUpdate data)
     {
-        throw new NotImplementedException();
+        return await coordinatesRepository.UpdateAsync(id, data);
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await coordinatesRepository.DeleteAsync(id);
     }
 
-    public async Task<Coordinates> GetAllByElementId(int id)
+    public async Task<Coordinates?> GetAllByElementId(int id)
     {
         return await coordinatesRepository.GetAllByElementIdAsync(id);
     }
 
-    public Task<Coordinates> GetById(int id)
+    public async Task<Coordinates?> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await coordinatesRepository.GetByIdAsync(id);
     }
 }
