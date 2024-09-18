@@ -17,12 +17,11 @@ services:
       - external
       - internal
     ports:
-      - "8080:8080"
+      - "11000"
     depends_on:
       - file-service
       - email-service
       - database
-      - nginx
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENV}
     restart: always
