@@ -16,12 +16,12 @@ public class AuthController : ControllerBase
     }
     
     [HttpPost("login")]
-    public async Task<IActionResult> Authorize(AuthLogin authData)
+    public async Task<ActionResult<LoginResponse>> Authorize([FromBody] LoginRequest data)
     {
-        var token = await authService.AuthorizeUser(authData);
+        var response = await authService.AuthorizeUser(data);
 
-        return string.IsNullOrWhiteSpace(token)
+        return response == new LoginResponse()
             ? BadRequest()
-            : Ok(token);
+            : Ok(response);
     }
 }

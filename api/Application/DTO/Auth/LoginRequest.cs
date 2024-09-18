@@ -1,6 +1,6 @@
 ﻿namespace Application.DTO.Auth;
 
-public class AuthLogin
+public class LoginRequest
 {
     public string Email { get; set; }
     public string Password { get; set; }

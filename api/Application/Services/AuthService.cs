@@ -18,18 +18,18 @@ public class AuthService : IAuthService
         this.userRepository = userRepository;
         this.configuration = configuration;
     }
-    public async Task<string> AuthorizeUser(AuthLogin authData)
+    public async Task<LoginResponse> AuthorizeUser(LoginRequest data)
     {
-        if (!ValidateUserData(authData))
+        if (!ValidateUserData(data))
         {
-            return string.Empty;
+            return new LoginResponse();
         }
 
-        var user = await userRepository.GetByCredentials(authData.Email, authData.Password);
+        var user = await userRepository.GetByCredentials(data.Email, data.Password);
         
         if (user == null)
         {
-            return string.Empty;
+            return new LoginResponse();
         }
 
         var claims = new[]
@@ -49,10 +49,14 @@ public class AuthService : IAuthService
         );
         var token = new JwtSecurityTokenHandler().WriteToken(jwtInfo);
 
-        return token;
+        return new LoginResponse
+        {
+            Token = token,
+            Role = user.Role
+        };
     }
 
-    private static bool ValidateUserData(AuthLogin? authData)
+    private static bool ValidateUserData(LoginRequest? authData)
     {
         return authData != null &&
                !string.IsNullOrWhiteSpace(authData.Email) &&

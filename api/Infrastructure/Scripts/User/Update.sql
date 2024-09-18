@@ -4,7 +4,7 @@ SET
     u.email           = @Email,
     u.password        = @Password,
     u.role            = @Role
-WHERE user_id = @UserId
+WHERE u.user_id = @UserId
 RETURNING
     u.user_id           as "UserId",
     u.user_name         as "UserName",
