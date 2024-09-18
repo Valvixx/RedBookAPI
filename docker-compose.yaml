@@ -17,7 +17,7 @@ services:
       - external
       - internal
     ports:
-      - "11000"
+      - "8080:8080"
     depends_on:
       - file-service
       - email-service
