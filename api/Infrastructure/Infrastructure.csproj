@@ -29,6 +29,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>PostgresBookElement.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Scripts\Coordinate\PostgresCoordinate.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>PostgresCoordinate.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -41,6 +45,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>PostgresBookElement.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Scripts\Coordinate\PostgresCoordinate.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PostgresCoordinate.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
