@@ -57,6 +57,9 @@ services:
 
   nginx:
     image: 'jc21/nginx-proxy-manager:latest'
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - '80:80' # Public HTTP Port
