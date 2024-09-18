@@ -20,6 +20,12 @@ public class M0000_InitialMigration: Migration
             .WithColumn("reference").AsString().NotNullable();
         Create.ForeignKey().FromTable("element_images").ForeignColumn("element_id").ToTable("book_elements").PrimaryColumn("id");
 
+        Create.Table("coordinates")
+            .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
+            .WithColumn("element_id").AsInt64().NotNullable().ForeignKey()
+            .WithColumn("coordinates").AsString().NotNullable();
+        Create.ForeignKey().FromTable("coordinates").ForeignColumn("element_id").ToTable("book_elements").PrimaryColumn("id");
+
         Create.Table("users")
             .WithColumn("user_id").AsInt32().Identity().NotNullable().Unique().PrimaryKey()
             .WithColumn("user_name").AsString(30).NotNullable()

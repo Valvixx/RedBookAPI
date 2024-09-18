@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.DTO;
+using Domain.Entities;
 using Infrastructure.Dapper;
 using Infrastructure.Dapper.Interfaces;
 using Infrastructure.Models;

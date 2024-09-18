@@ -1,7 +1,6 @@
 ﻿using Application.Services.Models;
-using Domain.Entities;
 
-namespace Infrastructure.Models;
+namespace Application.DTO;
 
 public record BookElementDbCreate
 {

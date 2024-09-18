@@ -1,6 +1,6 @@
 ﻿using Application.Services.Models;
 
-namespace Infrastructure.Models;
+namespace Application.DTO;
 
 public record BookElementDbUpdate
 {
