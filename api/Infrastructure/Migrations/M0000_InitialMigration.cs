@@ -27,13 +27,6 @@ public class M0000_InitialMigration: Migration
         Create.ForeignKey().FromTable("coordinates").ForeignColumn("element_id").ToTable("book_elements").PrimaryColumn("id");
         
         Create.Table("users")
-            .WithColumn("id").AsInt64().Identity().NotNullable().Unique().PrimaryKey()
-            .WithColumn("type").AsInt16().NotNullable()
-            .WithColumn("username").AsString().NotNullable()
-            .WithColumn("email").AsString().NotNullable()
-            .WithColumn("password").AsString().NotNullable();
-        
-        Create.Table("users")
             .WithColumn("user_id").AsInt32().Identity().NotNullable().Unique().PrimaryKey()
             .WithColumn("user_name").AsString(30).NotNullable()
             .WithColumn("email").AsString(50).NotNullable()
